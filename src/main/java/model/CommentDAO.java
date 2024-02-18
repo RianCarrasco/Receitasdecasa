@@ -54,7 +54,23 @@ public class CommentDAO extends DAO {
         
         return comentarios; // Retorna a lista de comentários
     }
-    
+    public int getQuantidadeComentariosPorReceita(int idReceita) {
+        int quantidadeComentarios = 0;
+        String query = "SELECT COUNT(*) AS quantidade FROM Comentarios WHERE receita_id = ?";
+        try {
+            Connection con = conectar();
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, idReceita);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                quantidadeComentarios = rs.getInt("quantidade");
+            }
+            con.close();
+        } catch (SQLException e) {
+            System.out.println("Erro ao obter quantidade de comentários por receita: " + e.getMessage());
+        }
+        return quantidadeComentarios;
+    }
 }
 
 /*
